@@ -28,10 +28,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define USE_SERIAL
 // #define USE_I2C
 
+// RGB lighting
+#define RGBLIGHT_ANIMATIONS
+#undef RGBLED_NUM
+#define RGBLED_NUM 24
+
 /* Select hand configuration */
 
 #define MASTER_LEFT
 // #define MASTER_RIGHT
 // #define EE_HANDS
+#define AUTO_SHIFT_TIMEOUT 130
 
 #endif
