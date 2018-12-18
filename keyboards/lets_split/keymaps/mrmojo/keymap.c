@@ -12,12 +12,15 @@
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
-  NUMPAD
+  LOWER,
+  RAISE,
+  NUMPAD,
+  ADJUST
 };
 
-#define LOWER  MO(_LOWER)
-#define RAISE  MO(_RAISE)
-#define ADJUST MO(_ADJUST)
+// Fillers to make layering more clear
+#define _______ KC_TRNS
+#define XXXXXXX KC_NO
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Qwerty
@@ -125,6 +128,44 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         set_single_persistent_default_layer(_QWERTY);
       }
       return false;
+      break;
+    case LOWER:
+      if (record->event.pressed) {
+        layer_on(_LOWER);
+        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+      } else {
+        layer_off(_LOWER);
+        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+      }
+      return false;
+      break;
+    case RAISE:
+      if (record->event.pressed) {
+        layer_on(_RAISE);
+        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+      } else {
+        layer_off(_RAISE);
+        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+      }
+      return false;
+      break;
+    case ADJUST:
+      if (record->event.pressed) {
+        layer_on(_ADJUST);
+      } else {
+        layer_off(_ADJUST);
+      }
+      return false;
+      break;
+    case NUMPAD:
+      if(record->event.pressed){
+        layer_on(_NUMPAD);
+        PORTB &= ~(1<<0);
+      } else {
+        layer_off(_NUMPAD);
+        PORTB |= (1<<0);
+            }
+      break;
   }
   return true;
 }
